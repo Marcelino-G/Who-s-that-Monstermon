@@ -1,7 +1,10 @@
-const holder = document.getElementById("holder");
-const questions = document.getElementById("questions");
+const imgs = document.getElementsByTagName("img");
+const figCaptions = document.getElementsByTagName("figcaption")
+const hints = document.getElementsByClassName("hint");
+const imgsArray = Array.from(imgs)
+
 let urlsArray = []
-let dataArray = []
+
 
 function randomNumber(max,min){
    return Math.floor(Math.random() * (max-min) + min)
@@ -15,107 +18,80 @@ function urlLoop(){
    }
 }
 
-function fetching() {
+async function fetching() {
 
-   return promise = new Promise ((resolve,reject) => {
-      
-      urlsArray.map((url) => {
-         fetch (url)
-            .then (response => (response.json()))
-            .then (data => { 
-               dataArray.push(data);
-               if(dataArray.length == 4){
-                  resolve(dataArray)
-                  }
-               })
-      })
-   })  
+   return Promise.all(urlsArray.map( async (url) => {
+      const response = await fetch(url)
+      return response.json();
+      }) 
+   )
 }
 
-function createPokemon(){
+function createPokemon(x){
 
    return promise = new Promise ((resolve, reject) => {
 
-      dataArray.map((x) => {
-         let pokemonFigure = document.createElement("figure")
-         holder.append(pokemonFigure);
-         let pokemonImg = document.createElement("img")
-         let pokemonCaption = document.createElement("figcaption")
-   
-         let srcAttribute = x.sprites.back_default;
-         let altAttribute = x.species.name
-   
-         pokemonImg.setAttribute("src", srcAttribute)
-         pokemonImg.setAttribute("alt", altAttribute)
-         pokemonFigure.append(pokemonImg)
-   
-         pokemonCaption.innerHTML = altAttribute
-         pokemonFigure.append(pokemonCaption)
-
-         let imgs = document.getElementsByTagName("img");
-         
-         if (imgs.length === 4){
-            imgs = document.getElementsByTagName("img");
-            resolve(Promise.all(imgs))
-         }
-      }) 
+      for (let i = 0; i < x.length; i++){
+         imgs[i].setAttribute("src", x[i].sprites.back_default)
+         imgs[i].setAttribute("alt", x[i].species.name)
+         figCaptions[i].innerHTML = x[i].species.name;
+      }
+      resolve(Promise.all([imgs, figCaptions]))
    })
 }
 
-function grabRandomDataArray () {
+function makeRandomArrayNumber () {
 
    return new Promise((resolve, reject) => {
-      let dataArrayRandomNum = randomNumber(4,0)
-      resolve (dataArrayRandomNum)
+      let randomArrayNum = randomNumber(4,0)
+      resolve (randomArrayNum)
    }) 
 }
 
-function randoData(x) {
+function makeRandomJsonResultsNumber(x,y) {
 
    return new Promise((resolve, reject) => {
-      resolve(dataArray[x])
+      resolve(x[y])
    })
 }
 
-function randoFigure(x){
+function makeRandomImgNumber(x, y){
+
+   return new Promise((resolve, reject) => {
+
+      resolve(x[y])
+   })
+
+
+}
+
+function creatingHints(x, y){
+
+   x[0].insertAdjacentHTML("beforebegin", " " + y.abilities[0].ability.name)
+   x[1].insertAdjacentHTML("beforebegin", " " + y.types[0].type.name)
+   x[2].insertAdjacentHTML("beforebegin", " " + y.game_indices[0].version.name)
+
 
    return new Promise((resolve, reject) => {
 
       resolve(x)
    })
-
-
 }
 
-function creatingHints(x){
-
-   questions.innerHTML = `<p>one of my abilities is called ${x.abilities[0].ability.name}.</p>
-   <p>I am a ${x.types[0].type.name} type of Pokemon.</p>
-   <p>You can find me in PokeMon ${x.game_indices[0].version.name}</p> `
-
-
-   return new Promise((resolve, reject) => {
-      resolve (questions)
-   })
-}
-
-function clicks(x, y, z) {
+function choosingAnswer(x) {
 
    return new Promise((resolve, reject) => {
 
-      for (let i = 0; i < x.length; i++){
+      imgsArray.map((z) => {
 
-         x[i].addEventListener("click", () => {
+         z.addEventListener("click", () => {
+   
+            if (z.getAttribute("src") === x.sprites.back_default){ 
 
-            if (x[i].getAttribute("src") === y.getAttribute("src") ){
-
-               console.log("corrrecto")
-               x[i].setAttribute("src", z[i].sprites.front_default)
-            } else {
-               console.log ("wrong")
+               z.setAttribute("src", x.sprites.front_default)
             }
          })
-      }
+      })
    })
 }
 
@@ -129,14 +105,15 @@ function con(x) {
 
 async function gettingAndMakingData() {
 
-   const result = await fetching();
-   const imgsHtml = await createPokemon();
-   const d = await con(result);
-   const randomArray = await grabRandomDataArray();
-   const randomDataArray = await randoData(randomArray);
-   const randomImgArray = await randoFigure(imgsHtml[randomArray]);
-   const hintHtml = await creatingHints(randomDataArray); 
-   const clicked = await clicks(imgsHtml, randomImgArray, result)
+   const jsonResults = await fetching();
+   const imgsFigCaptionsHtml = await createPokemon(jsonResults);
+   const randomArrayNumber = await makeRandomArrayNumber();
+   const randomJsonResult = await makeRandomJsonResultsNumber(jsonResults, randomArrayNumber);
+   const randomImg = await makeRandomImgNumber(imgsFigCaptionsHtml[0], randomArrayNumber);
+   const pHtmlHints = await creatingHints(hints, randomJsonResult); 
+   const answer = await choosingAnswer(randomJsonResult)
+   // const d = await con(answer);
+   
 }
 
 
