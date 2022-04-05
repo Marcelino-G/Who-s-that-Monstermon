@@ -1,9 +1,18 @@
-const imgs = document.getElementsByTagName("img");
+let answeredCorrect = document.getElementById("totalCorrect")
+let totalQuestion = document.getElementById("totalQuestionsNumber")
+let numCorrect = 0;
+let numTotalQuestions = 0;
+answeredCorrect.innerHTML = numCorrect;
+totalQuestion.innerHTML = numTotalQuestions;
+
 const figCaptions = document.getElementsByTagName("figcaption")
 const hints = document.getElementsByClassName("hint");
-const imgsArray = Array.from(imgs)
 
+const imgs = document.getElementsByTagName("img");
+const imgsArray = Array.from(imgs)
 let urlsArray = []
+
+
 
 
 function randomNumber(max,min){
@@ -15,6 +24,19 @@ function urlLoop(){
       let newNum = randomNumber(386,1);
       randomUrl = `https://pokeapi.co/api/v2/pokemon/${newNum}`
       urlsArray.push(randomUrl)
+   }
+}
+
+function updateQuestionCount(x){
+   if (x === true){
+      numCorrect ++;
+      numTotalQuestions ++;
+      answeredCorrect.innerHTML = numCorrect;
+      totalQuestion.innerHTML = numTotalQuestions;
+   } else if (x === false){
+      numTotalQuestions ++;
+      answeredCorrect.innerHTML = numCorrect;
+      totalQuestion.innerHTML = numTotalQuestions;
    }
 }
 
@@ -33,8 +55,8 @@ function createPokemon(x){
 
       for (let i = 0; i < x.length; i++){
          imgs[i].setAttribute("src", x[i].sprites.back_default)
-         imgs[i].setAttribute("alt", x[i].species.name)
-         figCaptions[i].innerHTML = x[i].species.name;
+         imgs[i].setAttribute("alt", x[i].species.name.charAt(0).toUpperCase() + x[i].species.name.slice(1))
+         figCaptions[i].innerHTML = x[i].species.name.charAt(0).toUpperCase() + x[i].species.name.slice(1);
       }
       resolve(Promise.all([imgs, figCaptions]))
    })
@@ -67,10 +89,9 @@ function makeRandomImgNumber(x, y){
 
 function creatingHints(x, y){
 
-   x[0].insertAdjacentHTML("beforebegin", " " + y.abilities[0].ability.name)
-   x[1].insertAdjacentHTML("beforebegin", " " + y.types[0].type.name)
-   x[2].insertAdjacentHTML("beforebegin", " " + y.game_indices[0].version.name)
-
+   x[0].innerHTML = y.abilities[0].ability.name.toUpperCase()
+   x[1].innerHTML = y.types[0].type.name.toUpperCase()
+   x[2].innerHTML = y.game_indices[0].version.name.toUpperCase()
 
    return new Promise((resolve, reject) => {
 
@@ -89,6 +110,11 @@ function choosingAnswer(x) {
             if (z.getAttribute("src") === x.sprites.back_default){ 
 
                z.setAttribute("src", x.sprites.front_default)
+               updateQuestionCount(true);
+               
+
+            } else{
+               updateQuestionCount(false);
             }
          })
       })

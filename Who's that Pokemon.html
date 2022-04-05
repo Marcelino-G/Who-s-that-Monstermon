@@ -10,14 +10,21 @@
 </head>
 <body class = "fluid-container" >
     
-    <main class = "container" >
-        <div id = "scoreboard" class = "row">
+    <main class = "container mx-auto row justify-content-center mt-2 pb-2" >
+
+        <div id = "scoreboard" class = "row col-12 gy-1">
             <h1 class = "col" >Who's that Pokemon</h1>
-            <p class = "col-1 align-self-end">1/10</p>
+            <div class = "col-1 align-self-end">
+                <p id = "totalCorrect" class = "d-inline-block">1</p>
+                <p class = "d-inline-block">/</p>
+                <p id = "totalQuestionsNumber" class = "d-inline-block">10</p>
+            </div>
+            
         </div>
-        <section id = "pokemonHolder" class = "row justify-content-center">
+
+        <section id = "pokemonHolder" class = "row justify-content-center col-12 gy-1">
             <h2 class = "text-center col-12">Pokemon</h2>
-            <div id = "figureHolder" class = "col-12 row justify-content-around">
+            <div id = "figureHolder" class = "col-12 row justify-content-between">
                 <figure class = "col-3 row text-center justify-content-center">
                     <img class = "col-10">
                     <figcaption class = "col-12">
@@ -44,11 +51,13 @@
             </div>
         </section>
         
-        <section id = "questions" class = "text-center">
+        <section id = "questions" class = "text-center col-12 gy-2">
             <h2>Hints</h2>
-            <p class = "d-inline-block">One of my abilities is called <p class = "hint d-inline-block"> </p>. </p>
-            <p class = "d-inline-block">I am a <p class = "hint d-inline-block"> </p> type of Pokemon. </p>
-            <p class = "d-inline-block">You can find me in Pokemon <p class = "hint d-inline-block"> </p> </p>
+            <ul class = "list-group">
+                <li class = "list-group-item">One of my abilities is called <p class = "hint d-inline-block fst-italic"></p>.</li>
+                <li class = "list-group-item">I am a <p class = "hint d-inline-block fst-italic"></p> type Pokemon.</li>
+                <li class = "list-group-item">One of my first video game appearances is in Pokemon <p class = "hint d-inline-block fst-italic"></p>.</li>
+            </ul>
         </section>
     </main>
 </body>

@@ -1,67 +1,25 @@
-body {
-
-    border: solid blue 10px;
-
+body{
+    height: 95vh;
 }
 
-/* #pokemonHolder {
+main{
+    background-color: #C53B3E;
+    height: 100%;
+}
 
-    border: solid green 1px;
+#pokemonHolder{
+    background-color: #6BBDD8;
+}
 
-} */
+#questions, .list-group, .list-group-item{
+    background-color: #FDCA05;
+}
 
-/* h2 {
+.list-group-item{
+    border: none;
+    padding: 0.25rem 1rem;
+}
 
-    border: solid black 1px;
-
-} */
-
- /* figure {
-
-
-    border: solid pink 1px;
-    
-
-} */
-
-/* #figureHolder{
-
-    border: solid brown 1px;
-
-} */
-
-  /* img{
-
-    border: solid purple 3px;
+img{
     cursor: pointer;
-}
-
-figcaption{
-
-    border: solid yellow 1px;
-
-} */
-
- #scoreboard{
-
-    border: solid grey 1px;
-
-}
-
-p{
-
-    border: solid purple 1px;
-
-} 
-
-.hint{
-
-    border: solid lightgoldenrodyellow 2px;
-
-}
-
-#questions{
-
-    border: solid lightblue 2px;
-
 }
