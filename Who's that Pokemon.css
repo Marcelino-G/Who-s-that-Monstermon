@@ -23,3 +23,16 @@ main{
 img{
     cursor: pointer;
 }
+
+#popUpCorrect{
+
+    z-index: 1;
+    top: 10%;
+    background-color: #41AABA;
+    opacity: 95%;
+}
+
+.figurePopUp{
+
+    background-color: #CFEBE7;
+}

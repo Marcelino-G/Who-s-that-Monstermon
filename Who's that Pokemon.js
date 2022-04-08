@@ -5,12 +5,19 @@ let numTotalQuestions = 0;
 answeredCorrect.innerHTML = numCorrect;
 totalQuestion.innerHTML = numTotalQuestions;
 
-const figCaptions = document.getElementsByTagName("figcaption")
+const figCaptions = document.getElementsByClassName("captionLineUp")
 const hints = document.getElementsByClassName("hint");
 
-const imgs = document.getElementsByTagName("img");
+const imgs = document.getElementsByClassName("imgLineUp");
 const imgsArray = Array.from(imgs)
 let urlsArray = []
+
+const correctImg = document.getElementById("correctImg")
+const correctCaption = document.getElementById("correctCaption")
+
+const popUpCorrect = document.getElementById("popUpCorrect")
+const nextButton = document.getElementById("next");
+const popUpText = document.getElementById("popUpText")
 
 
 
@@ -35,9 +42,9 @@ function updateQuestionCount(x){
       totalQuestion.innerHTML = numTotalQuestions;
    } else if (x === false){
       numTotalQuestions ++;
-      answeredCorrect.innerHTML = numCorrect;
       totalQuestion.innerHTML = numTotalQuestions;
    }
+   // console.log(numTotalQuestions)
 }
 
 async function fetching() {
@@ -105,20 +112,46 @@ function choosingAnswer(x) {
 
       imgsArray.map((z) => {
 
-         z.addEventListener("click", () => {
+         z.addEventListener("click", async () => {
    
             if (z.getAttribute("src") === x.sprites.back_default){ 
 
-               z.setAttribute("src", x.sprites.front_default)
+               popUpText.textContent = "CORRECT!"
+               correctPopUp(x);
                updateQuestionCount(true);
-               
 
-            } else{
-               updateQuestionCount(false);
+            } else if (z.getAttribute("src") != x.sprites.back_default){
+               popUpText.textContent = "INCORRECT! The correct answer should have been"
+               correctPopUp(x);
+               return updateQuestionCount(false);
+               console.log(numTotalQuestions)
+               
             }
          })
       })
    })
+}
+
+nextButton.addEventListener("click", () => {
+
+   
+   reset();
+   popUpCorrect.classList.replace("d-block", "d-none");
+
+})
+
+function correctPopUp(x){
+   
+   correctImg.setAttribute("src", x.sprites.front_default)
+   correctImg.setAttribute("alt", x.species.name.charAt(0).toUpperCase() + x.species.name.slice(1))
+   correctCaption.innerHTML = x.species.name.charAt(0).toUpperCase() + x.species.name.slice(1);
+   popUpCorrect.classList.replace("d-none", "d-block");
+}
+
+function reset() {
+   urlsArray = [];
+   urlLoop();
+   gettingAndMakingData();
 }
 
 function con(x) {
