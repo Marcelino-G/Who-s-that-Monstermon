@@ -1,9 +1,9 @@
-let answeredCorrect = document.getElementById("totalCorrect")
-let totalQuestion = document.getElementById("totalQuestionsNumber")
-let numCorrect = 0;
-let numTotalQuestions = 0;
-answeredCorrect.innerHTML = numCorrect;
-totalQuestion.innerHTML = numTotalQuestions;
+let correctTotalHtml = document.getElementById("totalCorrect")
+let questionTotalHtml = document.getElementById("totalQuestionsNumber")
+let correctTotal = 0;
+let questionTotal = 0;
+correctTotalHtml.innerHTML = correctTotal;
+questionTotalHtml.innerHTML = questionTotal;
 
 const figCaptions = document.getElementsByClassName("captionLineUp")
 const hints = document.getElementsByClassName("hint");
@@ -15,7 +15,7 @@ let urlsArray = []
 const correctImg = document.getElementById("correctImg")
 const correctCaption = document.getElementById("correctCaption")
 
-const popUpCorrect = document.getElementById("popUpCorrect")
+const popUpDiv = document.getElementById("popUpCorrect")
 const nextButton = document.getElementById("next");
 const popUpText = document.getElementById("popUpText")
 
@@ -35,16 +35,21 @@ function urlLoop(){
 }
 
 function updateQuestionCount(x){
-   if (x === true){
-      numCorrect ++;
-      numTotalQuestions ++;
-      answeredCorrect.innerHTML = numCorrect;
-      totalQuestion.innerHTML = numTotalQuestions;
-   } else if (x === false){
-      numTotalQuestions ++;
-      totalQuestion.innerHTML = numTotalQuestions;
-   }
-   // console.log(numTotalQuestions)
+
+   return new Promise ((resolve, reject) => {
+
+      if (x === "CORRECT!"){
+         correctTotal ++;
+         questionTotal ++;
+         correctTotalHtml.innerHTML = correctTotal;
+         questionTotalHtml.innerHTML = questionTotal;
+      } else{
+         questionTotal ++;
+         questionTotalHtml.innerHTML = questionTotal;
+      }
+
+
+   })
 }
 
 async function fetching() {
@@ -87,7 +92,6 @@ function makeRandomJsonResultsNumber(x,y) {
 function makeRandomImgNumber(x, y){
 
    return new Promise((resolve, reject) => {
-
       resolve(x[y])
    })
 
@@ -101,7 +105,6 @@ function creatingHints(x, y){
    x[2].innerHTML = y.game_indices[0].version.name.toUpperCase()
 
    return new Promise((resolve, reject) => {
-
       resolve(x)
    })
 }
@@ -117,14 +120,13 @@ function choosingAnswer(x) {
             if (z.getAttribute("src") === x.sprites.back_default){ 
 
                popUpText.textContent = "CORRECT!"
-               correctPopUp(x);
-               updateQuestionCount(true);
+               popUp(x);
+               resolve(popUpText.textContent)
 
             } else if (z.getAttribute("src") != x.sprites.back_default){
                popUpText.textContent = "INCORRECT! The correct answer should have been"
-               correctPopUp(x);
-               return updateQuestionCount(false);
-               console.log(numTotalQuestions)
+               popUp(x);
+               resolve(popUpText.textContent)
                
             }
          })
@@ -136,33 +138,27 @@ nextButton.addEventListener("click", () => {
 
    
    reset();
-   popUpCorrect.classList.replace("d-block", "d-none");
+   popUpDiv.classList.replace("d-block", "d-none");
 
 })
 
-function correctPopUp(x){
+function popUp(x){
    
    correctImg.setAttribute("src", x.sprites.front_default)
    correctImg.setAttribute("alt", x.species.name.charAt(0).toUpperCase() + x.species.name.slice(1))
    correctCaption.innerHTML = x.species.name.charAt(0).toUpperCase() + x.species.name.slice(1);
-   popUpCorrect.classList.replace("d-none", "d-block");
+   popUpDiv.classList.replace("d-none", "d-block");
 }
 
 function reset() {
    urlsArray = [];
    urlLoop();
-   gettingAndMakingData();
+   theWholeProcess();
 }
 
-function con(x) {
 
-   return new Promise((resolve, reject) => {
 
-      resolve (console.log(x));
-   })
-}
-
-async function gettingAndMakingData() {
+async function theWholeProcess() {
 
    const jsonResults = await fetching();
    const imgsFigCaptionsHtml = await createPokemon(jsonResults);
@@ -170,14 +166,15 @@ async function gettingAndMakingData() {
    const randomJsonResult = await makeRandomJsonResultsNumber(jsonResults, randomArrayNumber);
    const randomImg = await makeRandomImgNumber(imgsFigCaptionsHtml[0], randomArrayNumber);
    const pHtmlHints = await creatingHints(hints, randomJsonResult); 
-   const answer = await choosingAnswer(randomJsonResult)
-   // const d = await con(answer);
+   const answerText = await choosingAnswer(randomJsonResult)
+   const update = await updateQuestionCount(answerText);
+   // const d = await con(update);
    
 }
 
 
 urlLoop();
-gettingAndMakingData();
+theWholeProcess();
 
 
 
@@ -186,7 +183,13 @@ gettingAndMakingData();
 
 
 
+// function con(x) {
 
+//    return new Promise((resolve, reject) => {
+
+//       resolve (console.log(x));
+//    })
+// }
 
 // async function fetchJSON (url) {
 //    const response = await fetch(url, {
