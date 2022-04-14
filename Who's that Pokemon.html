@@ -8,11 +8,15 @@
     <link href="C:\Users\Marsea\Desktop\JavaScript Practice\Who's that Pokemon\Who's that Pokemon.css" rel="stylesheet">
     <title>Who's that Pokemon</title>
 </head>
+
 <body class = "fluid-container" >
     
+    <!-- Most of the elements lack value and are filled in with JavaScript -->
     <main class = "container mx-auto row justify-content-center mt-2 pb-2" >
 
-        <div id = "popUpCorrect" class = "d-none position-absolute text-center col-6 top-25">
+        <!-- this is a *popUp that only appears when an answer is chosen
+        (from display none to display block) -->
+        <div id = "popUpCorrect" class = "d-none position-absolute text-center col-6 top-25 row">
             <p id = "popUpText" class = "fw-bold fs-3 d-inline-block text-wrap"></p>
             <button id = "next" class = "float-end d-inline-block">Next</button>
             <figure class = "figurePopUp">
@@ -22,18 +26,17 @@
             </figure>
         </div>
 
-
-
+        <!-- container for the title (header) and score  -->
         <div id = "scoreboard" class = "row col-12 gy-1">
             <h1 class = "col" >Who's that Pokemon</h1>
-            <div class = "col-1 align-self-end">
+            <div class = "col-2 align-self-end">
                 <p id = "totalCorrect" class = "d-inline-block">1</p>
                 <p class = "d-inline-block">/</p>
                 <p id = "totalQuestionsNumber" class = "d-inline-block">10</p>
             </div>
-            
         </div>
 
+        <!-- container for the pokemon images -->
         <section id = "pokemonHolder" class = "row justify-content-center col-12 gy-1">
             <h2 class = "text-center col-12">Pokemon</h2>
             <div id = "figureHolder" class = "col-12 row justify-content-between">
@@ -63,6 +66,7 @@
             </div>
         </section>
         
+        <!-- container for the hints that lead to the correct pokemon  -->
         <section id = "questions" class = "text-center col-12 gy-2">
             <h2>Hints</h2>
             <ul class = "list-group">
@@ -71,6 +75,7 @@
                 <li class = "list-group-item">One of my first video game appearances is in Pokemon <p class = "hint d-inline-block fst-italic"></p>.</li>
             </ul>
         </section>
+
     </main>
 </body>
 
