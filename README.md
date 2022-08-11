@@ -3,6 +3,10 @@
 ## What
  ***Who's that Pokemon?***  is a "game" that tests a players Pokemon knowledge. You get to watch your score count go up when you choose the correct Pokemon the generated hints point towards.
  
+## Why
+- To practice fetching data from an API that is later stored in an array for the first time ever, while utilizing JavaScript's async/await syntax.
+- To test a friend's Pokemon Knowledge. 
+ 
 ## Sources
 All images and "hint" keywords are fetched and taken from ***PokeAPI***.
 - PokeAPI: https://pokeapi.co/
