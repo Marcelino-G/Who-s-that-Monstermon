@@ -55,7 +55,7 @@ async function fetching() {
 
 // some of the fetched data is pulled and 
 // inserted into the html elements (pokemon back image and pokemon name).
-function createPokemon(x){
+function createMonstermon(x){
 
    return promise = new Promise ((resolve, reject) => {
 
@@ -198,7 +198,7 @@ async function theWholeProcess() {
 
    // creates an array of 2 HTMLcollections. 
    // the first consists of images and the second figcaptions
-   const imgsFigCaptionsHtml = await createPokemon(jsonResults);
+   const imgsFigCaptionsHtml = await createMonstermon(jsonResults);
 
    // random number to be used to access ONE matching json result and image 
    // from their own array.
